@@ -1,0 +1,37 @@
+<html>
+<head><style type="text/css">
+{%block style%}
+	ul {
+		display: inline;
+		list-style-type: none;
+	}
+	
+	li {
+		//display: inline;
+		//list-style-type: none;
+	}
+
+    ul.errorlist {
+        margin: 0;
+        padding: 0;
+    }
+    .errorlist li {
+        background-color: red;
+        color: white;
+        display: block;
+        font-size: 10px;
+        margin: 0 0 3px;
+        padding: 4px 5px;
+    }
+{%endblock%}
+</style>
+<title>{%block title%}Page not found{%endblock%} | Prova </title>
+</head>
+<body>
+{%block main%}
+	404
+{%endblock%}
+
+{%block footer%}{%endblock%}
+</body>
+</html>

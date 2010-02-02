@@ -1,0 +1,28 @@
+{%extends "searchbase"%}
+
+{%block result%}
+
+trovati {{numrisultati}} risultati per {{keyword}} in {{place}}: <br />
+{% if result %}
+<table border="1" >
+<tr id="top">
+<td>nome documento</td>
+<td>distanceScore</td>
+<td>sortScore</td>
+<td>textScore</td>
+<td>snippet</td>
+</tr>
+{%for doc in result%}
+<tr>
+<td>{{doc.nomeDoc}}</td>
+<td>{{doc.distanceScore}}</td>
+<td>{{doc.sortScore}}</td>
+<td>{{doc.textScore}}</td>
+<td>{{doc.htmlSnippet}}</td>
+
+</tr>
+{%endfor%}
+</table>
+{%endif%}
+{%endblock%}
+
