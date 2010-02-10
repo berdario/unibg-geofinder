@@ -26,6 +26,7 @@
 {%endblock%}
 </style>
 <title>{%block title%}Page not found{%endblock%} | Prova </title>
+<script type="text/javascript" src="/files/jquery.js"></script>
 </head>
 <body>
 {%block main%}

@@ -9,13 +9,32 @@ GeoSearch
 <form name="searchform" method="get">
 	<ul>
 	{{form.as_ul}}
-	<!--li><input type="text" name="keyword" value="keyword" /></li>
-	<li><input type="text" name="place" value="luogo" /></li-->
-	<!--li><input type="submit" value="cerca" /></li-->
-	<li><input type="button" value="cerca" onClick="document.location.href='/search/'+document.searchform.place.value+'/'+document.searchform.keyword.value+'/';" /></li>
+	<li><input type="submit" id="cerca" value="cerca" /></li>
 	</ul>
 </form>
 
-{%block result%}{%endblock%}
+<script>
+var add_message = function() {
+    var message = { keyword: $("#id_keyword").val(), place: $("#id_place").val() };
+    $.getJSON("/search/json/",message,
+        function(data){
+            $("#results").remove();
+            $("#resultcontainer").append("<ul id=\"results\"></ul>")
+            $.each(data,function(i,doc){
+            		$("#results").append("<li>"+doc.name+" "+doc.snippet+"</li>");
+            	}
+            );
+        }
+    );
+    
+  return false;
+};
+
+// attach the click handler to the button
+$("#cerca").click(add_message);
+
+</script>
+
+{%block result%}<div id="resultcontainer"></div>{%endblock%}
 
 {%endblock%}

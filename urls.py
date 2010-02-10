@@ -1,5 +1,5 @@
 from django.conf.urls.defaults import *
-from geofinder import view
+from geofinder import view, settings
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
@@ -8,7 +8,7 @@ from geofinder import view
 urlpatterns = patterns('',
 			(r'^search/$',view.searchform),
 			(r'^search/(\w*)/(\w*)/$',view.search),
-			(r'^search/json/(\w*)/(\w*)/$',view.searchjson),
+			(r'^search/json/$',view.searchjson),
     # Example:
     # (r'^geofinder/', include('geofinder.foo.urls')),
 
@@ -19,3 +19,9 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     # (r'^admin/', include(admin.site.urls)),
 )
+
+if settings.DEBUG:
+    urlpatterns += patterns('',
+        (r'^files/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT, 'show_indexes': True}),
+    )
+

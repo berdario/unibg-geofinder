@@ -30,10 +30,9 @@ def search(request,place,keyword):
 	#except (KeyError): pass
 	return render_to_response("search",locals())
 	
-def searchjson(request,place,keyword):
+def searchjson(request):
+	keyword,place = request.GET['keyword'], request.GET['place']
 	form=SearchForm({"keyword":keyword,"place":place,})
 	if form.is_valid():
 		result=searcher.search(keyword,place)
-		numrisultati=len(result)
-		jsonstring=json.dumps(result,cls=DocEncoder)
-	return render_to_response("json",locals())
+	return HttpResponse(simplejson.dumps(result,cls=DocEncoder), mimetype='application/json')
