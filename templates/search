@@ -1,28 +1,41 @@
-{%extends "searchbase"%}
+{%extends "base"%}
 
-{%block result%}
-
-trovati {{numrisultati}} risultati per {{keyword}} in {{place}}: <br />
-{% if result %}
-<table border="1" >
-<tr id="top">
-<td>nome documento</td>
-<td>distanceScore</td>
-<td>sortScore</td>
-<td>textScore</td>
-<td>snippet</td>
-</tr>
-{%for doc in result%}
-<tr>
-<td>{{doc.nomeDoc}}</td>
-<td>{{doc.distanceScore}}</td>
-<td>{{doc.sortScore}}</td>
-<td>{{doc.textScore}}</td>
-<td>{{doc.htmlSnippet}}</td>
-
-</tr>
-{%endfor%}
-</table>
-{%endif%}
+{%block title%}
+GeoSearch
 {%endblock%}
 
+{%block main%}
+
+<form name="searchform" method="get">
+	<ul>
+	{{form.as_ul}}
+	<li><input type="range" id="weigth" min="0" max="1" value="0.5" step="0.02" /></li>
+	<li><input type="submit" id="cerca" value="cerca" /></li>
+	</ul>
+</form>
+
+<script>
+var add_message = function() {
+    var message = { keyword: $("#id_keyword").val(), place: $("#id_place").val(), weigth: $("#weigth").val() };
+    $.getJSON("/search/",message,
+        function(data){
+            $("#results").remove();
+            $("#resultcontainer").append("<ul id=\"results\"></ul>")
+            $.each(data,function(i,doc){
+            		$("#results").append("<li>"+doc.name+" "+doc.snippet+"</li>");
+            	}
+            );
+        }
+    );
+    
+  return false;
+};
+
+// attach the click handler to the button
+$("#cerca").click(add_message);
+
+</script>
+
+{%block result%}<div id="resultcontainer"></div>{%endblock%}
+
+{%endblock%}

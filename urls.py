@@ -6,9 +6,8 @@ from geofinder import view, settings
 # admin.autodiscover()
 
 urlpatterns = patterns('',
-			(r'^search/$',view.searchform),
-			(r'^search/(\w*)/(\w*)/$',view.search),
-			(r'^search/json/$',view.searchjson),
+			(r'^$',view.searchform),
+			(r'^search/$',view.jsonsearch),
     # Example:
     # (r'^geofinder/', include('geofinder.foo.urls')),
 

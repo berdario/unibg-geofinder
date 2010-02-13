@@ -7,8 +7,8 @@ from geotag import GeoApplication
 class GeoSearch:
 	def __init__(self):
 		self.searcher=GeoApplication("/home/dario/geosearch/config")
-	def search(self,keywords,place):
-		return self.searcher.search(keywords,place)
+	def __call__(self,keywords,place,weigth):
+		return self.searcher.search(keywords,place,weigth)
 
 import simplejson
 from geotag.words import GeoRefDoc
