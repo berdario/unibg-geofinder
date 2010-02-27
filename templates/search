@@ -1,28 +1,53 @@
 {%extends "base"%}
 
+{%block head%}
+<link rel="stylesheet" href="/files/style.css" />
+{%endblock%}
+
 {%block title%}
 GeoSearch
 {%endblock%}
 
 {%block main%}
 
+<div id="header" class="container_12">
+<h1 id="title" class="grid_2 push_8" >GeoFinder</h1>
+</div>
+
+<div id="mainbox" class="container_12">
+
 <form name="searchform" method="get">
 	<ul>
 	{{form.as_ul}}
-	<li><input type="range" id="weigth" min="0" max="1" value="0.5" step="0.02" /></li>
 	<li><input type="submit" id="cerca" value="cerca" /></li>
 	</ul>
 </form>
-
+<br />
 <script>
-var add_message = function() {
-    var message = { keyword: $("#id_keyword").val(), place: $("#id_place").val(), weigth: $("#weigth").val() };
+var get_results = function() {
+    var message = { keyword: $("#id_keyword").val(), place: $("#id_place").val(), weigth: $("#id_weigth").val() };
     $.getJSON("/search/",message,
         function(data){
             $("#results").remove();
-            $("#resultcontainer").append("<ul id=\"results\"></ul>")
+            $("#resultcontainer").append("<ul id=\"results\" class=\"grid_9\"></ul>");
+            var newMainResults="<div id=\"mainresults\" >";
+            try{
+            	newMainResults += get_rich_result(data.shift());
+            	try{
+            		newMainResults += get_rich_result(data.shift());
+            		try{
+            			newMainResults += get_rich_result(data.shift());
+            		}
+            		catch(e){}
+            	}
+            	catch(e){}
+            }
+            catch(e){}
+            newMainResults += " </div>";
+            $("#mainresults").replaceWith(newMainResults);
+            $('#resultcontainer').css({top: $('#mainresults').position().top+70});
             $.each(data,function(i,doc){
-            		$("#results").append("<li>"+doc.name+" "+doc.snippet+"</li>");
+            		$("#results").append("<li>"+doc.title+"<br />"+doc.snippet+"</li>");
             	}
             );
         }
@@ -31,11 +56,18 @@ var add_message = function() {
   return false;
 };
 
+var get_rich_result = function(data){
+	var r="<div> "+data.title + "<br />"+"<img src=\"/files/thumbs/"+data.name+".png\" /> <br />"+"<a href=\"/files/cache/"+data.name+".pdf\">Copia Cache</a> <br /><span id=\"snippet\">"+data.snippet+"</span></div>";
+	return r;
+}
+
 // attach the click handler to the button
-$("#cerca").click(add_message);
+$("#cerca").click(get_results);
 
 </script>
 
-{%block result%}<div id="resultcontainer"></div>{%endblock%}
+{%block result%}<div id="mainresults"></div>
+</div>
+<div id="resultcontainer" class="container_12"></div>{%endblock%}
 
 {%endblock%}

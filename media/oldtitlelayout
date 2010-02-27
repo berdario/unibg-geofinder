@@ -1,0 +1,17 @@
+
+#content { margin: 0 auto; width:960px; }
+#title { width: 100%; background-color: #00F; height: 40px;  line-height: 40px; position:relative; left: 600px; }
+#bg      { background-color: #00F; width: 100%; height: 100px; position: absolute; z-index: -1; top: 40px; left:0; }
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+<title>Test</title>
+<link rel="stylesheet" type="text/css" href="http://www.webdevout.net/test?03z&amp;raw=css"></head>
+<body>
+
+<div id="content">    <h1 id="title">Title</h1>
+</div>
+<div id="bg"></div>
+</body>
+</html>

@@ -1,5 +1,12 @@
 <html>
-<head><style type="text/css">
+<head>
+<link rel="stylesheet" href="/files/reset.css" />
+<link rel="stylesheet" href="/files/text.css" />
+<link rel="stylesheet" href="/files/960.css" />
+
+{%block head%}
+{%endblock%}
+<style type="text/css">
 {%block style%}
 	ul {
 		display: inline;
@@ -29,10 +36,12 @@
 <script type="text/javascript" src="/files/jquery.js"></script>
 </head>
 <body>
+
 {%block main%}
 	404
 {%endblock%}
 
 {%block footer%}{%endblock%}
+
 </body>
 </html>
