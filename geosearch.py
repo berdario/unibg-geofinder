@@ -9,10 +9,10 @@ class GeoSearch:
 	def __init__(self):
 		self.searcher=GeoApplication("/home/dario/.config/geosearch/config")
 	def __call__(self,keywords,place,weigth):
-		a = self.searcher.search(keywords,place,weigth)
-		for i in range(10):
-			a.add(a[i])
-		return a
+		return self.searcher.search(keywords,place,weigth)
+		#for i in range(10):
+		#	a.add(a[i])
+		#return a
 
 import simplejson
 from geotag.words import GeoRefDoc
@@ -21,9 +21,9 @@ from geotag.words import GeoRefDoc
 class DocEncoder(simplejson.JSONEncoder):
 	def default(self,o):
 		if isinstance(o,GeoRefDoc):
-			if not o.docTitle:
-				o.docTitle = "No Title"
-			return {"name":o.nomeDoc, "title":o.docTitle, "description":o.docDescription, "snippet":o.htmlSnippet, "text score":o.textScore, "sort score":o.sortScore, "distance score":o.distanceScore, "keywords":o.docKeyWords, "dateline":o.docDateLine}
+			if not o.title:
+				o.title = "No Title"
+			return {"id":o.id, "title":o.title, "description":o.description, "snippet":o.htmlSnippet, "text score":o.textScore, "sort score":o.sortScore, "distance score":o.distanceScore, "keywords":o.keywords, "dateline":o.dateline, "url":o.url, "extension":o.extension}
 		if isinstance(o,Vector):
 			return [element for element in o]
 		return simplejson.JSONEncoder.default(self,o)

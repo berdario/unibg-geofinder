@@ -57,7 +57,10 @@ var get_results = function() {
 };
 
 var get_rich_result = function(data){
-	var r="<div> "+data.title + "<br />"+"<img src=\"/files/thumbs/"+data.name+".png\" /> <br />"+"<a href=\"/files/cache/"+data.name+".pdf\">Copia Cache</a> <br /><span id=\"snippet\">"+data.snippet+"</span></div>";
+	var r="<div> <a href=\"";
+	r+=data.url;
+	r+="\">" + data.title + "</a><br />";
+	r+="<img src=\"/files/thumbs/"+data.id+".png\" /> <br />"+"<a href=\"/files/cache/"+data.id+"."+data.extension+"\">Copia Cache</a> <br /><span id=\"snippet\">"+data.snippet+"</span></div>";
 	return r;
 }
 
