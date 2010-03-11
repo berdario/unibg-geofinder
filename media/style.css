@@ -4,6 +4,8 @@
 	width: 100%;
 	background-color: #6677cc;
 	z-index: 1;
+	padding-top: 5px;
+	padding-bottom: 5px;
 }
 
 #header {
@@ -28,12 +30,21 @@ label {
 	display: none;
 }
 
+form {
+	display: block;
+	position: relative;
+	left: 200px;
+}
+
 form li {
 	float: left;
 }
 
 #mainresults {
 	float: left;
+	display: block;
+	position: relative;
+	left: 100px;
 }
 
 #mainresults div {
@@ -46,6 +57,20 @@ form li {
 	color: #444444;
 }
 
+#results a{
+	position: relative;
+	left: -30px;
+}
+
 #snippet {
-	font-size: 9px;
+	font-size: 11px;
+}
+
+#url {
+	color: green;
+}
+
+#url a{
+	color: #77c;
+	left: 0px;
 }

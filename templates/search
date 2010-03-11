@@ -11,10 +11,10 @@ GeoSearch
 {%block main%}
 
 <div id="header" class="container_12">
-<h1 id="title" class="grid_2 push_8" >GeoFinder</h1>
+<h1 id="title" class="grid_2 push_11" >GeoFinder</h1>
 </div>
 
-<div id="mainbox" class="container_12">
+<div id="mainbox">
 
 <form name="searchform" method="get">
 	<ul>
@@ -38,18 +38,22 @@ var get_results = function() {
             		try{
             			newMainResults += get_rich_result(data.shift());
             		}
-            		catch(e){}
+            		catch(e){newMainResults += "<div></div>";}
             	}
-            	catch(e){}
+            	catch(e){newMainResults += "<div></div>";}
             }
-            catch(e){}
+            catch(e){newMainResults += "<div></div>";}
             newMainResults += " </div>";
             $("#mainresults").replaceWith(newMainResults);
-            $('#resultcontainer').css({top: $('#mainresults').position().top+70});
+            
             $.each(data,function(i,doc){
-            		$("#results").append("<li>"+doc.title+"<br />"+doc.snippet+"</li>");
+            		var n="<li> <a href=\""+doc.url+"\">"+doc.title+"</a> <br />"+doc.snippet+" <br /><span id=\"url\">"+doc.url;
+            		n+=" - <a href=\"/files/cache/"+doc.id+"."+doc.extension+"\">Copia Cache</a></span> </li>";
+            		$("#results").append(n);
             	}
             );
+            
+            $('#resultcontainer').css({top: $('#mainbox').position().top+$('#mainbox').height()+20});
         }
     );
     
@@ -60,7 +64,7 @@ var get_rich_result = function(data){
 	var r="<div> <a href=\"";
 	r+=data.url;
 	r+="\">" + data.title + "</a><br />";
-	r+="<img src=\"/files/thumbs/"+data.id+".png\" /> <br />"+"<a href=\"/files/cache/"+data.id+"."+data.extension+"\">Copia Cache</a> <br /><span id=\"snippet\">"+data.snippet+"</span></div>";
+	r+="<a href=\""+data.url+"\"> <img src=\"/files/thumbs/"+data.id+".png\" /> </a> <br />"+"<a href=\"/files/cache/"+data.id+"."+data.extension+"\">Copia Cache</a> <br /><span id=\"snippet\">"+data.snippet+"</span></div>";
 	return r;
 }
 
