@@ -26,7 +26,7 @@
 	position: relative;
 }
 
-label {
+ul label {
 	display: none;
 }
 
@@ -73,4 +73,12 @@ form li {
 #url a{
 	color: #77c;
 	left: 0px;
+}
+
+#geolocation {
+	display: none;
+	position: absolute;
+	left: 30px;
+	padding-top: 5px;
+	padding-bottom: 5px;
 }

@@ -13,6 +13,8 @@ class GeoSearch:
 		#for i in range(10):
 		#	a.add(a[i])
 		#return a
+	def __call__(self,keywords,lat,lon,weigth):
+		return self.searcher.search(keywords,lat,lon,weigth)
 
 import simplejson
 from geotag.words import GeoRefDoc

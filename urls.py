@@ -8,6 +8,7 @@ from geofinder import view, settings
 urlpatterns = patterns('',
 			(r'^$',view.searchform),
 			(r'^search/$',view.jsonsearch),
+			(r'^icbmsearch/$',view.icbmsearch),
     # Example:
     # (r'^geofinder/', include('geofinder.foo.urls')),
 

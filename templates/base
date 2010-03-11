@@ -1,11 +1,12 @@
 <html>
 <head>
+
+<title>{%block title%}Page not found{%endblock%} | Prova </title>
+
 <link rel="stylesheet" href="/files/reset.css" />
 <link rel="stylesheet" href="/files/text.css" />
 <link rel="stylesheet" href="/files/960.css" />
 
-{%block head%}
-{%endblock%}
 <style type="text/css">
 {%block style%}
 	ul {
@@ -32,8 +33,13 @@
     }
 {%endblock%}
 </style>
-<title>{%block title%}Page not found{%endblock%} | Prova </title>
+
 <script type="text/javascript" src="/files/jquery.js"></script>
+<script type="text/javascript" src="/files/modernizr.js"></script>
+
+{%block head%}
+{%endblock%}
+
 </head>
 <body>
 

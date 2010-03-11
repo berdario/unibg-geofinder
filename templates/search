@@ -2,6 +2,90 @@
 
 {%block head%}
 <link rel="stylesheet" href="/files/style.css" />
+
+<script>
+var position = null;
+
+var show_data = function(data){
+        $("#results").remove();
+        $("#resultcontainer").append("<ul id=\"results\" class=\"grid_9\"></ul>");
+        var newMainResults="<div id=\"mainresults\" >";
+        for (var i=0;i<3;i++){
+        	newMainResults+=get_rich_result(data);
+        }
+        newMainResults += " </div>";
+        $("#mainresults").replaceWith(newMainResults);
+        
+        $.each(data,function(i,doc){
+        		var n="<li> <a href=\""+doc.url+"\">"+doc.title+"</a> <br />"+doc.snippet+" <br /><span id=\"url\">"+doc.url;
+        		n+=" - <a href=\"/files/cache/"+doc.id+"."+doc.extension+"\">Copia Cache</a></span> </li>";
+        		$("#results").append(n);
+        	}
+        );
+        
+        $('#resultcontainer').css({top: $('#mainbox').position().top+$('#mainbox').height()+20});
+}
+
+var get_caller = function(param){
+	if (param == "place"){
+		return function(){
+			var message = { keyword: $("#id_keyword").val(), place: $("#id_place").val(), weigth: $("#id_weigth").val() };
+			$.getJSON("/search/",message,show_data);
+			return false;
+		};
+	} else if (param == "icbm"){
+		return function(){
+			var message = { keyword: $("#id_keyword").val(), weigth: $("#id_weigth").val(), lat: position.coords.latitude, lon:position.coords.longitude };
+			$.getJSON("/icbmsearch/",message,show_data);
+			return false;
+		};
+	}
+};
+
+var get_rich_result = function(results){
+	var r="<div>";
+	try{
+		var data=results.shift();
+		r+="<a href=\"" + data.url + "\">";
+		r+=data.title;
+		r+="</a><br />";
+		r+="<a href=\""+data.url+"\"> <img src=\"/files/thumbs/"+data.id+".png\" /> </a> <br />"+"<a href=\"/files/cache/"+data.id+"."+data.extension+"\">Copia Cache</a> <br /><span id=\"snippet\">"+data.snippet+"</span></div>";
+	} catch(e){
+		r+="</div>";
+	}
+	return r;
+}
+
+var geolocation_error = function(error){
+	if (error.code != 1){
+		$("#error").append("non sono riuscito ad ottenere la posizione");
+	}
+}
+
+$(document).ready(function() {
+	// attach the click handler to the button
+	$("#cerca").click(get_caller("place"));
+	
+	
+	if (Modernizr.geolocation) {
+		$("#geolocation").css("display","block");
+	}
+	$("#geolocate").change(function(){
+		if ($("#geolocate:checked").val()){
+			$("#id_place").css("opacity", 0.5);//bloccare l'input della location
+			navigator.geolocation.getCurrentPosition( function(pos) {position=pos}, geolocation_error, {maximumAge: 3600000});
+			$("#cerca").click(get_caller("icbm"));
+			//TODO: aggiungere una chiamata con high precision... penso che sia meglio prima fare la chiamata veloce, e poi fare quella -se supportata- ad alta precisione... questo in modo da avere subito a disposizione il dato per fare la ricerca 
+		} else {
+			$("#id_place").css("opacity", 1);
+			$("#cerca").click(get_caller("place"));
+			// attach the click handler to the button
+		}
+	})
+});
+
+</script>
+
 {%endblock%}
 
 {%block title%}
@@ -21,57 +105,10 @@ GeoSearch
 	{{form.as_ul}}
 	<li><input type="submit" id="cerca" value="cerca" /></li>
 	</ul>
+	<br />
+	<div id="geolocation"><label for="geolocate">Seleziona per cercare nella tua posizione corrente: </label><input type="checkbox" id="geolocate" /><span id="error"></span></div>
 </form>
 <br />
-<script>
-var get_results = function() {
-    var message = { keyword: $("#id_keyword").val(), place: $("#id_place").val(), weigth: $("#id_weigth").val() };
-    $.getJSON("/search/",message,
-        function(data){
-            $("#results").remove();
-            $("#resultcontainer").append("<ul id=\"results\" class=\"grid_9\"></ul>");
-            var newMainResults="<div id=\"mainresults\" >";
-            try{
-            	newMainResults += get_rich_result(data.shift());
-            	try{
-            		newMainResults += get_rich_result(data.shift());
-            		try{
-            			newMainResults += get_rich_result(data.shift());
-            		}
-            		catch(e){newMainResults += "<div></div>";}
-            	}
-            	catch(e){newMainResults += "<div></div>";}
-            }
-            catch(e){newMainResults += "<div></div>";}
-            newMainResults += " </div>";
-            $("#mainresults").replaceWith(newMainResults);
-            
-            $.each(data,function(i,doc){
-            		var n="<li> <a href=\""+doc.url+"\">"+doc.title+"</a> <br />"+doc.snippet+" <br /><span id=\"url\">"+doc.url;
-            		n+=" - <a href=\"/files/cache/"+doc.id+"."+doc.extension+"\">Copia Cache</a></span> </li>";
-            		$("#results").append(n);
-            	}
-            );
-            
-            $('#resultcontainer').css({top: $('#mainbox').position().top+$('#mainbox').height()+20});
-        }
-    );
-    
-  return false;
-};
-
-var get_rich_result = function(data){
-	var r="<div> <a href=\"";
-	r+=data.url;
-	r+="\">" + data.title + "</a><br />";
-	r+="<a href=\""+data.url+"\"> <img src=\"/files/thumbs/"+data.id+".png\" /> </a> <br />"+"<a href=\"/files/cache/"+data.id+"."+data.extension+"\">Copia Cache</a> <br /><span id=\"snippet\">"+data.snippet+"</span></div>";
-	return r;
-}
-
-// attach the click handler to the button
-$("#cerca").click(get_results);
-
-</script>
 
 {%block result%}<div id="mainresults"></div>
 </div>
