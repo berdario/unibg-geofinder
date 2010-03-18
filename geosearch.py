@@ -3,7 +3,7 @@
 import sys
 sys.path.append("/home/dario/geosearch.jar")
 from geotag import GeoApplication
-from java.util import Vector
+from java.util import ArrayList
 
 class GeoSearch:
 	def __init__(self):
@@ -26,6 +26,6 @@ class DocEncoder(simplejson.JSONEncoder):
 			if not o.title:
 				o.title = "No Title"
 			return {"id":o.id, "title":o.title, "description":o.description, "snippet":o.htmlSnippet, "text score":o.textScore, "sort score":o.sortScore, "distance score":o.distanceScore, "keywords":o.keywords, "dateline":o.dateline, "url":o.url, "extension":o.extension}
-		if isinstance(o,Vector):
+		if isinstance(o,ArrayList):
 			return [element for element in o]
 		return simplejson.JSONEncoder.default(self,o)
